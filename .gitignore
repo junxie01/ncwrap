@@ -26,3 +26,13 @@
 *.exe
 *.out
 *.app
+*.x
+
+# Mac
+.DS_Store
+
+# Emacs
+*~
+
+# program data output
+fort.*
