@@ -6,7 +6,7 @@
 !! --
 program test__netcdf_write
 
-  use m_netcdf
+  use m_ncwrap
   
   implicit none
 
@@ -35,7 +35,7 @@ program test__netcdf_write
   !!    arguments: filename, title, nx, ny, x(1:nx), y(1:ny), z(1:nx,1:ny)
   !!               x-label, y-label, z-label, x-unit, y-unit, z-unit
   !! ---- 
-  call netcdf__write_grd( 'test_1.nc', 'test', NLON, NLAT, lon, lat, dat1(:,:,1), &
+  call ncwrap__write_grd( 'test_1.nc', 'test', NLON, NLAT, lon, lat, dat1(:,:,1), &
                           'longitude', 'latitude', 'amplitude', 'degree-east', 'degree-north', 'm' )
 
 
@@ -47,25 +47,25 @@ program test__netcdf_write
 
   !! first defines the file. with x&y-axes and units. It returns file id as ncid variable
   !! arguments: filename, title, nx, ny, x(1:nx), y(1:ny), xlabel, ylabel, tlabel, xunit, yunit, zunit, ID
-  call netcdf__create( 'test_2.nc', 'test', NLON, NLAT, lon, lat, &
+  call ncwrap__create( 'test_2.nc', 'test', NLON, NLAT, lon, lat, &
                         'longitude', 'latitude', 'degree-east', 'degree-north', ncid )
 
   !! define data fields with names and units. 
   !! Data are distinguished by variable ids (varid1, varid2)
-  call netcdf__def_data( ncid, 'amplitude1', 'm', varid1)
-  call netcdf__def_data( ncid, 'amplitude2', 'm', varid2)
+  call ncwrap__def_data( ncid, 'amplitude1', 'm', varid1)
+  call ncwrap__def_data( ncid, 'amplitude2', 'm', varid2)
 
   !! one can add any kinds of header information as "attribute" of netcdf file
-  call netcdf__add_attribute( ncid, "ascii   attribute", "12345" ) 
-  call netcdf__add_attribute( ncid, "real    attribute", 123.45  )
-  call netcdf__add_attribute( ncid, "integer attribute", 12345   )
+  call ncwrap__add_attribute( ncid, "ascii   attribute", "12345" ) 
+  call ncwrap__add_attribute( ncid, "real    attribute", 123.45  )
+  call ncwrap__add_attribute( ncid, "integer attribute", 12345   )
 
   !! add data to netcdf file
-  call netcdf__add_data( ncid, varid1, dat1(:,:,1) )
-  call netcdf__add_data( ncid, varid2, dat2(:,:,1) )
+  call ncwrap__add_data( ncid, varid1, dat1(:,:,1) )
+  call ncwrap__add_data( ncid, varid2, dat2(:,:,1) )
   
   !! close the file
-  call netcdf__close( ncid )
+  call ncwrap__close( ncid )
 
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -77,30 +77,30 @@ program test__netcdf_write
   !! first defines the file. with x,y and time-axes and units. It returns file id as ncid variable
   !! arguments: filename, title, nx, ny, x(1:nx), y(1:ny), xlabel, ylabel, tlabel, xunit, yunit, zunit, ID
   !! number of time grid is not necessary 
-  call netcdf__create( 'test_3.nc', 'test', NLON, NLAT, lon(1:NLON), lat(1:NLAT), &
+  call ncwrap__create( 'test_3.nc', 'test', NLON, NLAT, lon(1:NLON), lat(1:NLAT), &
                         'longitude', 'latitude', 'time', 'degree-east', 'degree-north', 'sec', ncid )
   
   !! define data fields with names and units.
   !! Data are distinguished by variable ids (varid1, varid2)
-  call netcdf__def_data( ncid, 'amplitude1','m', varid1)
-  call netcdf__def_data( ncid, 'amplitude2','m', varid2 )
+  call ncwrap__def_data( ncid, 'amplitude1','m', varid1)
+  call ncwrap__def_data( ncid, 'amplitude2','m', varid2 )
 
   !! one can add any kinds of header information as "attribute" of netcdf file
-  call netcdf__add_attribute( ncid, "ascii   attribute", "12345" ) 
-  call netcdf__add_attribute( ncid, "real    attribute", 123.45  )
-  call netcdf__add_attribute( ncid, "integer attribute", 12345   )
+  call ncwrap__add_attribute( ncid, "ascii   attribute", "12345" ) 
+  call ncwrap__add_attribute( ncid, "real    attribute", 123.45  )
+  call ncwrap__add_attribute( ncid, "integer attribute", 12345   )
 
   !! time loop
   t = 0
   do k=1, NT
      !! add space snapshot of the data at time t with time-index k
-     call netcdf__add_data( ncid, varid1, k, t, dat1(:,:,k) )
-     call netcdf__add_data( ncid, varid2, k, t, dat2(:,:,k) )
+     call ncwrap__add_data( ncid, varid1, k, t, dat1(:,:,k) )
+     call ncwrap__add_data( ncid, varid2, k, t, dat2(:,:,k) )
      t = t + dt
   end do
 
   !! close the file
-  call netcdf__close( ncid )
+  call ncwrap__close( ncid )
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
 

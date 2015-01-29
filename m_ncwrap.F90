@@ -6,7 +6,7 @@
 !! Requires netcdf library from unidata (version>=3.6)
 !!
 !! ----
-module m_netcdf
+module m_ncwrap
 
 #ifdef _NETCDF
   use netcdf
@@ -22,22 +22,22 @@ module m_netcdf
   integer,     parameter :: STDERR  = 0 !< Standard Error
   
   !! Write
-  public :: netcdf__create
-  public :: netcdf__def_data
-  public :: netcdf__add_data
-  public :: netcdf__add_attribute
+  public :: ncwrap__create
+  public :: ncwrap__def_data
+  public :: ncwrap__add_data
+  public :: ncwrap__add_attribute
 
   !! Read
-  public :: netcdf__open
-  public :: netcdf__read_data
+  public :: ncwrap__open
+  public :: ncwrap__read_data
 
   !! Common
-  public :: netcdf__close
-  public :: netcdf__inq
+  public :: ncwrap__close
+  public :: ncwrap__inq
 
   !! Read/Write GMT grd file
-  public :: netcdf__read_grd
-  public :: netcdf__write_grd
+  public :: ncwrap__read_grd
+  public :: ncwrap__write_grd
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   !!
@@ -55,44 +55,44 @@ module m_netcdf
   !! - var : attribute value (single, double, int, char)
   !<
   !! --
-  interface netcdf__add_attribute
+  interface ncwrap__add_attribute
 
-     module procedure netcdf__add_attribute_s, netcdf__add_attribute_d, netcdf__add_attribute_i, netcdf__add_attribute_a
+     module procedure ncwrap__add_attribute_s, ncwrap__add_attribute_d, ncwrap__add_attribute_i, ncwrap__add_attribute_a
 
   end interface
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   
   !! --------------------------------------------------------------------------------------------------------------------------- !!
-  interface netcdf__open
+  interface ncwrap__open
      
-     module procedure netcdf__open_2d_s,  netcdf__open_2d_d, &
-                      netcdf__open_2dt_s, netcdf__open_2dt_d
+     module procedure ncwrap__open_2d_s,  ncwrap__open_2d_d, &
+                      ncwrap__open_2dt_s, ncwrap__open_2dt_d
 
   end interface
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   !! --------------------------------------------------------------------------------------------------------------------------- !!
-  interface netcdf__read_data
-     module procedure netcdf__read_data_2d_s, netcdf__read_data_2d_d, &
-                      netcdf__read_data_2dt_s, netcdf__read_data_2dt_d
+  interface ncwrap__read_data
+     module procedure ncwrap__read_data_2d_s, ncwrap__read_data_2d_d, &
+                      ncwrap__read_data_2dt_s, ncwrap__read_data_2dt_d
   end interface
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   !! --------------------------------------------------------------------------------------------------------------------------- !!
-  interface netcdf__create
-     module procedure netcdf__create_2d_s, netcdf__create_2d_d, &
-                      netcdf__create_2dt_s, netcdf__create_2dt_d
+  interface ncwrap__create
+     module procedure ncwrap__create_2d_s, ncwrap__create_2d_d, &
+                      ncwrap__create_2dt_s, ncwrap__create_2dt_d
   end interface
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   !! --------------------------------------------------------------------------------------------------------------------------- !!
-  interface netcdf__add_data
-     module procedure netcdf__add_data_2d_s, netcdf__add_data_2d_d, &
-                      netcdf__add_data_2dt_s, netcdf__add_data_2dt_d
+  interface ncwrap__add_data
+     module procedure ncwrap__add_data_2d_s, ncwrap__add_data_2d_d, &
+                      ncwrap__add_data_2dt_s, ncwrap__add_data_2dt_d
   end interface
   !! --------------------------------------------------------------------------------------------------------------------------- !!
-  interface netcdf__write_grd
-     module procedure netcdf__write_grd_s, netcdf__write_grd_d
+  interface ncwrap__write_grd
+     module procedure ncwrap__write_grd_s, ncwrap__write_grd_d
   end interface
-  interface netcdf__read_grd
-     module procedure netcdf__read_grd_s, netcdf__read_grd_d
+  interface ncwrap__read_grd
+     module procedure ncwrap__read_grd_s, ncwrap__read_grd_d
   end interface
   
 
@@ -121,7 +121,7 @@ contains
   !! Open time-dependent 2d(+time) netcdf file for read. It also read axis arrays. Double Precision
   !<
   !! --
-  subroutine netcdf__open_2dt_d( fname, nx, ny, nt, x, y, t, ncid )
+  subroutine ncwrap__open_2dt_d( fname, nx, ny, nt, x, y, t, ncid )
 
     character(*),          intent(in)  :: fname
     integer,               intent(out) :: nx
@@ -174,7 +174,7 @@ contains
 
 #endif
 
-  end subroutine netcdf__open_2dt_d
+  end subroutine ncwrap__open_2dt_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -182,7 +182,7 @@ contains
   !! Open time-dependent 2d(+time) netcdf file for read. It also read axis arrays. Single Precision
   !<
   !! --
-  subroutine netcdf__open_2dt_s( fname, nx, ny, nt, x, y, t, ncid )
+  subroutine ncwrap__open_2dt_s( fname, nx, ny, nt, x, y, t, ncid )
 
     character(*),          intent(in)  :: fname
     integer,               intent(out) :: nx
@@ -235,7 +235,7 @@ contains
 
 #endif
 
-  end subroutine netcdf__open_2dt_s
+  end subroutine ncwrap__open_2dt_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
 
@@ -244,7 +244,7 @@ contains
   !! Open time-dependent 2d netcdf file for read. It also read axis arrays. Double Precision
   !<
   !! --
-  subroutine netcdf__open_2d_d( fname, nx, ny, x, y, ncid )
+  subroutine ncwrap__open_2d_d( fname, nx, ny, x, y, ncid )
 
     character(*),          intent(in)  :: fname
     integer,               intent(out) :: nx
@@ -289,7 +289,7 @@ contains
 
 #endif
 
-  end subroutine netcdf__open_2d_d
+  end subroutine ncwrap__open_2d_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -297,7 +297,7 @@ contains
   !! Open time-dependent 2d netcdf file for read. It also read axis arrays. Single Precision
   !<
   !! --
-  subroutine netcdf__open_2d_s( fname, nx, ny, x, y, ncid )
+  subroutine ncwrap__open_2d_s( fname, nx, ny, x, y, ncid )
 
     character(*),          intent(in)  :: fname
     integer,               intent(out) :: nx
@@ -342,11 +342,11 @@ contains
 
 #endif
 
-  end subroutine netcdf__open_2d_s
+  end subroutine ncwrap__open_2d_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
-  subroutine netcdf__read_data_2d_d( ncid, varnm, z )
+  subroutine ncwrap__read_data_2d_d( ncid, varnm, z )
     
     integer,      intent(in)  :: ncid
     character(*), intent(in)  :: varnm  !< variable name
@@ -360,7 +360,7 @@ contains
     
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__read_data: no such ncid"
+       write(STDERR,*) "ncwrap__read_data: no such ncid"
        return
     end if
 
@@ -369,11 +369,11 @@ contains
 
 #endif
 
-  end subroutine netcdf__read_data_2d_d
+  end subroutine ncwrap__read_data_2d_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
-  subroutine netcdf__read_data_2d_s( ncid, varnm, z )
+  subroutine ncwrap__read_data_2d_s( ncid, varnm, z )
     
     integer,      intent(in)  :: ncid
     character(*), intent(in)  :: varnm  !< variable name
@@ -388,7 +388,7 @@ contains
     
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__read_data: no such ncid"
+       write(STDERR,*) "ncwrap__read_data: no such ncid"
        return
     end if
 
@@ -397,11 +397,11 @@ contains
 
 #endif
 
-  end subroutine netcdf__read_data_2d_s
+  end subroutine ncwrap__read_data_2d_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   
   !! --------------------------------------------------------------------------------------------------------------------------- !!
-  subroutine netcdf__read_data_2dt_d( ncid, varnm, it, z )
+  subroutine ncwrap__read_data_2dt_d( ncid, varnm, it, z )
     
     integer,      intent(in)  :: ncid
     character(*), intent(in)  :: varnm !< variable name
@@ -419,7 +419,7 @@ contains
 
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__read_data: no such ncid"
+       write(STDERR,*) "ncwrap__read_data: no such ncid"
        return
     end if
 
@@ -431,12 +431,12 @@ contains
     
 #endif
 
-  end subroutine netcdf__read_data_2dt_d
+  end subroutine ncwrap__read_data_2dt_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   
  
   !! --------------------------------------------------------------------------------------------------------------------------- !!
-  subroutine netcdf__read_data_2dt_s( ncid, varnm, it, z )
+  subroutine ncwrap__read_data_2dt_s( ncid, varnm, it, z )
     
     integer,      intent(in)  :: ncid
     character(*), intent(in)  :: varnm !< variable name
@@ -454,7 +454,7 @@ contains
 
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__read_data: no such ncid"
+       write(STDERR,*) "ncwrap__read_data: no such ncid"
        return
     end if
 
@@ -466,7 +466,7 @@ contains
     
 #endif
 
-  end subroutine netcdf__read_data_2dt_s
+  end subroutine ncwrap__read_data_2dt_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -474,7 +474,7 @@ contains
   !! Inquire grid size of 2D array NETCDF file
   !<
   !! --
-  subroutine netcdf__inq( fn_in, title, nx, ny, nt, ndim, nvar, xname, yname, tname, zname, xunit, yunit, tunit, zunit )
+  subroutine ncwrap__inq( fn_in, title, nx, ny, nt, ndim, nvar, xname, yname, tname, zname, xunit, yunit, tunit, zunit )
 
     !! -- Argumetns
     character(*), intent(in)  :: fn_in
@@ -530,7 +530,7 @@ contains
     
 #endif
 
-  end subroutine netcdf__inq
+  end subroutine ncwrap__inq
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -544,7 +544,7 @@ contains
   !! default units for latitude, longitude are degree-north/degree-east for better compatibility with GMT commands. 
   !<
   !! ----
-  subroutine netcdf__create_2dt_d( fname, title, nx, ny, x, y, xname, yname, tname, xunit, yunit, tunit, ncid )
+  subroutine ncwrap__create_2dt_d( fname, title, nx, ny, x, y, xname, yname, tname, xunit, yunit, tunit, ncid )
 
     character(*), intent(in)  :: fname  !< Filename
     character(*), intent(in)  :: title  !< Title of the file
@@ -617,7 +617,7 @@ contains
 
 #endif
 
-  end subroutine netcdf__create_2dt_d
+  end subroutine ncwrap__create_2dt_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -631,7 +631,7 @@ contains
   !! default units for latitude, longitude are degree-north/degree-east for better compatibility with GMT commands. 
   !<
   !! ----
-  subroutine netcdf__create_2dt_s( fname, title, nx, ny, x, y, xname, yname, tname, xunit, yunit, tunit, ncid )
+  subroutine ncwrap__create_2dt_s( fname, title, nx, ny, x, y, xname, yname, tname, xunit, yunit, tunit, ncid )
 
     character(*), intent(in)  :: fname  !< Filename
     character(*), intent(in)  :: title  !< Title of the file
@@ -704,7 +704,7 @@ contains
 
 #endif
 
-  end subroutine netcdf__create_2dt_s
+  end subroutine ncwrap__create_2dt_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
 
@@ -720,7 +720,7 @@ contains
   !! default units for latitude, longitude are degree-north/degree-east for better compatibility with GMT. 
   !<
   !! --
-  subroutine netcdf__create_2d_d( fname, title, nx, ny, x, y, xname, yname, xunit, yunit, ncid )
+  subroutine ncwrap__create_2d_d( fname, title, nx, ny, x, y, xname, yname, xunit, yunit, ncid )
     
     character(*), intent(in)  :: fname        !< filename
     character(*), intent(in)  :: title        !< title of the file
@@ -788,7 +788,7 @@ contains
 
 #endif
     
-  end subroutine netcdf__create_2d_d
+  end subroutine ncwrap__create_2d_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -803,7 +803,7 @@ contains
   !! default units for latitude, longitude are degree-north/degree-east for better compatibility with GMT. 
   !<
   !! --
-  subroutine netcdf__create_2d_s ( fname, title, nx, ny, x, y, xname, yname, xunit, yunit, ncid )
+  subroutine ncwrap__create_2d_s ( fname, title, nx, ny, x, y, xname, yname, xunit, yunit, ncid )
     
     character(*), intent(in)  :: fname        !< filename
     character(*), intent(in)  :: title        !< title of the file
@@ -871,7 +871,7 @@ contains
 
 #endif
     
-  end subroutine netcdf__create_2d_s
+  end subroutine ncwrap__create_2d_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   
 
@@ -880,7 +880,7 @@ contains
   !! Define new data field. Returns variable id. 
   !<
   !! --
-  subroutine netcdf__def_data( ncid, zname, zunit, zid )
+  subroutine ncwrap__def_data( ncid, zname, zunit, zid )
     
     integer,      intent(in)  :: ncid  !< netcdf file id
     character(*), intent(in)  :: zname !< variable longname
@@ -898,7 +898,7 @@ contains
 
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__def_dat_2dt: no such ncid"
+       write(STDERR,*) "ncwrap__def_dat_2dt: no such ncid"
        return
     end if
     
@@ -941,7 +941,7 @@ contains
 
 #endif
     
-  end subroutine netcdf__def_data
+  end subroutine ncwrap__def_data
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -949,7 +949,7 @@ contains
   !! Add data snapshot at time t attributed by varid to netcdf datafile.
   !<
   !! --
-  subroutine netcdf__add_data_2dt_d( ncid, varid, it, t, z )
+  subroutine ncwrap__add_data_2dt_d( ncid, varid, it, t, z )
     
     integer,  intent(in) :: ncid
     integer,  intent(in) :: varid
@@ -968,7 +968,7 @@ contains
     !! seek file id
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__add_data: no such ncid"
+       write(STDERR,*) "ncwrap__add_data: no such ncid"
        return
     end if
 
@@ -982,14 +982,14 @@ contains
 
 #endif
     
-  end subroutine netcdf__add_data_2dt_d
+  end subroutine ncwrap__add_data_2dt_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   !! --------------------------------------------------------------------------------------------------------------------------- !!
   !>
   !! Add data snapshot at time t attributed by varid to netcdf datafile.
   !<
   !! --
-  subroutine netcdf__add_data_2dt_s( ncid, varid, it, t, z )
+  subroutine ncwrap__add_data_2dt_s( ncid, varid, it, t, z )
     
     integer,  intent(in) :: ncid
     integer,  intent(in) :: varid
@@ -1008,7 +1008,7 @@ contains
     !! seek file id
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__add_data: no such ncid"
+       write(STDERR,*) "ncwrap__add_data: no such ncid"
        return
     end if
 
@@ -1022,7 +1022,7 @@ contains
 
 #endif
     
-  end subroutine netcdf__add_data_2dt_s
+  end subroutine ncwrap__add_data_2dt_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   
@@ -1031,7 +1031,7 @@ contains
   !! Add data attributed by varid to netcdf datafile.
   !<
   !! --
-  subroutine netcdf__add_data_2d_d( ncid, varid, z )
+  subroutine ncwrap__add_data_2d_d( ncid, varid, z )
     
     integer,  intent(in) :: ncid
     integer,  intent(in) :: varid
@@ -1046,7 +1046,7 @@ contains
     !! seek file id
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__add_data_2d: no such ncid"
+       write(STDERR,*) "ncwrap__add_data_2d: no such ncid"
        return
     end if
     
@@ -1059,7 +1059,7 @@ contains
 
 #endif
     
-  end subroutine netcdf__add_data_2d_d
+  end subroutine ncwrap__add_data_2d_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -1067,7 +1067,7 @@ contains
   !! Add data attributed by varid to netcdf datafile.
   !<
   !! --
-  subroutine netcdf__add_data_2d_s( ncid, varid, z )
+  subroutine ncwrap__add_data_2d_s( ncid, varid, z )
     
     integer,  intent(in) :: ncid
     integer,  intent(in) :: varid
@@ -1082,7 +1082,7 @@ contains
     !! seek file id
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__add_data_2d: no such ncid"
+       write(STDERR,*) "ncwrap__add_data_2d: no such ncid"
        return
     end if
     
@@ -1095,7 +1095,7 @@ contains
 
 #endif
     
-  end subroutine netcdf__add_data_2d_s
+  end subroutine ncwrap__add_data_2d_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -1103,7 +1103,7 @@ contains
   !! Add real-valued attribute to netcdf file
   !<
   !! --
-  subroutine netcdf__add_attribute_s( ncid, name, var )
+  subroutine ncwrap__add_attribute_s( ncid, name, var )
 
     integer,      intent(in) :: ncid
     character(*), intent(in) :: name
@@ -1117,7 +1117,7 @@ contains
     call nc_chk( nf90_enddef( ncid ) )
 #endif
 
-  end subroutine netcdf__add_attribute_s
+  end subroutine ncwrap__add_attribute_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -1125,7 +1125,7 @@ contains
   !! Add real-valued attribute to netcdf file
   !<
   !! --
-  subroutine netcdf__add_attribute_d( ncid, name, var )
+  subroutine ncwrap__add_attribute_d( ncid, name, var )
 
     integer,      intent(in) :: ncid
     character(*), intent(in) :: name
@@ -1139,7 +1139,7 @@ contains
     call nc_chk( nf90_enddef( ncid ) )
 #endif
 
-  end subroutine netcdf__add_attribute_d
+  end subroutine ncwrap__add_attribute_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -1147,7 +1147,7 @@ contains
   !! Add integer-valued attribute to netcdf file
   !<
   !! --
-  subroutine netcdf__add_attribute_i( ncid, name, var )
+  subroutine ncwrap__add_attribute_i( ncid, name, var )
 
     integer,      intent(in) :: ncid
     character(*), intent(in) :: name
@@ -1159,7 +1159,7 @@ contains
     call nc_chk( nf90_put_att( ncid, NF90_GLOBAL, trim(name), var ) )
     call nc_chk( nf90_enddef( ncid ) )
 #endif
-  end subroutine netcdf__add_attribute_i
+  end subroutine ncwrap__add_attribute_i
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -1167,7 +1167,7 @@ contains
   !! Add character attribute to netcdf file
   !<
   !! --
-  subroutine netcdf__add_attribute_a( ncid, name, var )
+  subroutine ncwrap__add_attribute_a( ncid, name, var )
 
     integer,      intent(in) :: ncid
     character(*), intent(in) :: name
@@ -1179,7 +1179,7 @@ contains
     call nc_chk( nf90_put_att( ncid, NF90_GLOBAL, trim(name), trim(var) ) )
     call nc_chk( nf90_enddef( ncid ) )
 #endif
-  end subroutine netcdf__add_attribute_a
+  end subroutine ncwrap__add_attribute_a
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -1187,7 +1187,7 @@ contains
   !! Close netcdf file
   !<
   !! --
-  subroutine netcdf__close( ncid )
+  subroutine ncwrap__close( ncid )
 
     integer, intent(in) :: ncid
     integer :: id
@@ -1197,13 +1197,13 @@ contains
 #ifdef _NETCDF
     call idsearch( ncid, id, found )
     if( .not. found ) then
-       write(STDERR,*) "netcdf__close: no such ncid"
+       write(STDERR,*) "ncwrap__close: no such ncid"
     end if
     
     call nc_chk( nf90_close( ncid ) )
     is_open( id ) = .false.
 #endif    
-  end subroutine netcdf__close
+  end subroutine ncwrap__close
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   
@@ -1212,7 +1212,7 @@ contains
   !! A set of subroutine call for creating 2D time-independent netcdf file (GMT grd file)
   !<
   !! --
-  subroutine netcdf__write_grd_s( fname, title, nx, ny, x, y, z, xname, yname, zname, xunit, yunit, zunit )
+  subroutine ncwrap__write_grd_s( fname, title, nx, ny, x, y, z, xname, yname, zname, xunit, yunit, zunit )
     
     character(*), intent(in) :: fname
     character(*), intent(in) :: title  !< Title of the file
@@ -1228,14 +1228,14 @@ contains
 
 #ifdef _NETCDF
     
-    call netcdf__create  ( fname, title, nx, ny, x, y, xname, yname, xunit, yunit, ncid )
-    call netcdf__def_data( ncid, zname, zunit, zid )
-    call netcdf__add_data( ncid, zid, z )
-    call netcdf__close( ncid )
+    call ncwrap__create  ( fname, title, nx, ny, x, y, xname, yname, xunit, yunit, ncid )
+    call ncwrap__def_data( ncid, zname, zunit, zid )
+    call ncwrap__add_data( ncid, zid, z )
+    call ncwrap__close( ncid )
 
 #endif
 
-  end subroutine netcdf__write_grd_s
+  end subroutine ncwrap__write_grd_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   
@@ -1244,7 +1244,7 @@ contains
   !! A set of subroutine call for creating 2D time-independent netcdf file (GMT grd file)
   !<
   !! --
-  subroutine netcdf__write_grd_d( fname, title, nx, ny, x, y, z, xname, yname, zname, xunit, yunit, zunit )
+  subroutine ncwrap__write_grd_d( fname, title, nx, ny, x, y, z, xname, yname, zname, xunit, yunit, zunit )
     
     character(*), intent(in) :: fname
     character(*), intent(in) :: title  !< Title of the file
@@ -1260,14 +1260,14 @@ contains
 
 #ifdef _NETCDF
     
-    call netcdf__create  ( fname, title, nx, ny, x, y, xname, yname, xunit, yunit, ncid )
-    call netcdf__def_data( ncid, zname, zunit, zid )
-    call netcdf__add_data( ncid, zid, z )
-    call netcdf__close( ncid )
+    call ncwrap__create  ( fname, title, nx, ny, x, y, xname, yname, xunit, yunit, ncid )
+    call ncwrap__def_data( ncid, zname, zunit, zid )
+    call ncwrap__add_data( ncid, zid, z )
+    call ncwrap__close( ncid )
 
 #endif
     
-  end subroutine netcdf__write_grd_d
+  end subroutine ncwrap__write_grd_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -1275,7 +1275,7 @@ contains
   !! A set of subroutine call for reading 2d time-independent netcdf file (GMT grd file)
   !<
   !! --
-  subroutine netcdf__read_grd_s( fname, title, nx, ny, x, y, z, xname, yname, zname, xunit, yunit, zunit )
+  subroutine ncwrap__read_grd_s( fname, title, nx, ny, x, y, z, xname, yname, zname, xunit, yunit, zunit )
     character(*),          intent(in)  :: fname
     character(*),          intent(out) :: title  !< Title of the file
     integer,               intent(out) :: nx     !< x-axis size
@@ -1294,18 +1294,18 @@ contains
 
 #ifdef _NETCDF
 
-    call netcdf__inq( fname, title, nx, ny, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
+    call ncwrap__inq( fname, title, nx, ny, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
     ! assume first record
     zname = zname2(1)
     zunit = zunit2(1)
     allocate( x(nx), y(ny), z(nx,ny) )
 
-    call netcdf__open( fname, nx, ny, x, y, ncid )
-    call netcdf__read_data( ncid, zname, z )
-    call netcdf__close( ncid )
+    call ncwrap__open( fname, nx, ny, x, y, ncid )
+    call ncwrap__read_data( ncid, zname, z )
+    call ncwrap__close( ncid )
 #endif
 
-  end subroutine netcdf__read_grd_s
+  end subroutine ncwrap__read_grd_s
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -1313,7 +1313,7 @@ contains
   !! A set of subroutine call for reading 2d time-independent netcdf file (GMT grd file)
   !<
   !! --
-  subroutine netcdf__read_grd_d( fname, title, nx, ny, x, y, z, xname, yname, zname, xunit, yunit, zunit )
+  subroutine ncwrap__read_grd_d( fname, title, nx, ny, x, y, z, xname, yname, zname, xunit, yunit, zunit )
     character(*),          intent(in)  :: fname
     character(*),          intent(out) :: title  !< Title of the file
     integer,               intent(out) :: nx     !< x-axis size
@@ -1331,18 +1331,18 @@ contains
     character(80) :: zname2(10), zunit2(10)
 
 #ifdef _NETCDF
-    call netcdf__inq( fname, title, nx, ny, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
+    call ncwrap__inq( fname, title, nx, ny, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
     ! assume first record
     zname(:) = zname2(1)(:)
     zunit(:) = zunit2(1)(:)
     allocate( x(nx), y(ny), z(nx,ny) )
 
-    call netcdf__open( fname, nx, ny, x, y, ncid )
-    call netcdf__read_data( ncid, zname, z )
-    call netcdf__close( ncid )
+    call ncwrap__open( fname, nx, ny, x, y, ncid )
+    call ncwrap__read_data( ncid, zname, z )
+    call ncwrap__close( ncid )
 #endif
 
-  end subroutine netcdf__read_grd_d
+  end subroutine ncwrap__read_grd_d
   !! --------------------------------------------------------------------------------------------------------------------------- !!
     
   !! --------------------------------------------------------------------------------------------------------------------------- !!
@@ -1412,5 +1412,5 @@ contains
   !! --------------------------------------------------------------------------------------------------------------------------- !!
 
   
-end module m_netcdf
+end module m_ncwrap
 !! ----------------------------------------------------------------------------------------------------------------------------- !!

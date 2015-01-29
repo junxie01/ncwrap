@@ -8,7 +8,7 @@
 !! ----
 program test__netcdf_read
  
-  use m_netcdf
+  use m_ncwrap
   implicit none
 
   integer, parameter :: STDERR = 0
@@ -27,7 +27,7 @@ program test__netcdf_read
   !! 1. An easy way to read single value netcdf file by calling a wrapper routine.
   !!
   !! --
-  call netcdf__read_grd( 'test_1.nc', title, nlon, nlat, lon, lat, dat1, xname, yname, zname, xunit, yunit, zunit )
+  call ncwrap__read_grd( 'test_1.nc', title, nlon, nlat, lon, lat, dat1, xname, yname, zname, xunit, yunit, zunit )
   write(STDERR,*) "file = test_1.nc"
   write(STDERR,*) "title = ", trim(title)
   write(STDERR,*) "(nlon, nlat) = (", nlon, ",", nlat, ")"
@@ -49,7 +49,7 @@ program test__netcdf_read
   !! --
 
   !! inquire header information of netcdf files
-  call netcdf__inq( 'test_2.nc', title, nlon, nlat, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
+  call ncwrap__inq( 'test_2.nc', title, nlon, nlat, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
 
   write(STDERR,*) "file = test_2.nc"
   write(STDERR,*) "dimension = ", ndim
@@ -61,16 +61,16 @@ program test__netcdf_read
   allocate( lon(nlon), lat(nlat), dat1(nlon,nlat), dat2(nlon,nlat) )
 
   !! read data
-  call netcdf__open('test_2.nc', nlon, nlat, lon, lat, ncid )
-  call netcdf__inq( 'test_2.nc', title, nlon, nlat, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
+  call ncwrap__open('test_2.nc', nlon, nlat, lon, lat, ncid )
+  call ncwrap__inq( 'test_2.nc', title, nlon, nlat, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
   write(STDERR,*) "file = test_2.nc"
   write(STDERR,*) "dimension = ", ndim
   write(STDERR,*) "title = ", trim(title)
   write(STDERR,*) "(nlon, nlat) = (", nlon, ",", nlat, ")"
 
-  call netcdf__read_data( ncid, trim(zname2(1)), dat1 )
-  call netcdf__read_data( ncid, trim(zname2(2)), dat2 )
-  call netcdf__close( ncid )
+  call ncwrap__read_data( ncid, trim(zname2(1)), dat1 )
+  call ncwrap__read_data( ncid, trim(zname2(2)), dat2 )
+  call ncwrap__close( ncid )
   write(STDERR,*) "export data to fort.102"
   do j=1, nlat
      do i=1, nlon
@@ -87,12 +87,12 @@ program test__netcdf_read
   !! 3. Read time-dependent dataset
   !!
   !! --
-  call netcdf__inq( 'test_3.nc', title, nlon, nlat, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
+  call ncwrap__inq( 'test_3.nc', title, nlon, nlat, nt, ndim, nvar, xname, yname, tname, zname2, xunit, yunit, tunit, zunit2 )
   allocate( dat1(nlon,nlat), dat2(nlon,nlat) )
-  call netcdf__open('test_3.nc', nlon, nlat, nt, lon, lat, tim, ncid )
+  call ncwrap__open('test_3.nc', nlon, nlat, nt, lon, lat, tim, ncid )
   do k=1, nt
-     call netcdf__read_data( ncid, zname2(1), k, dat1 )
-     call netcdf__read_data( ncid, zname2(1), k, dat2 )
+     call ncwrap__read_data( ncid, zname2(1), k, dat1 )
+     call ncwrap__read_data( ncid, zname2(1), k, dat2 )
      do j=1, nlat
         do i=1, nlon
            write(200+k,'(4F15.5)') lon(i), lat(j), dat1(i,j), dat2(i,j)
@@ -100,7 +100,7 @@ program test__netcdf_read
         write(200+k,*)
      end do
   end do
-  call netcdf__close(ncid)
+  call ncwrap__close(ncid)
 
 end program test__netcdf_read
 !! ----------------------------------------------------------------------------------------------------------------------------- !!

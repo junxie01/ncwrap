@@ -18,11 +18,11 @@ NCFLAGS = -D_NETCDF -lnetcdf -lnetcdff #( -lnetcdff is required for netcdf ver 4
 
 all: test__netcdf_write.x test__netcdf_read.x
 
-m_netcdf.o: m_netcdf.F90
+m_ncwrap.o: m_ncwrap.F90
 	$(FC) -I$(NCINC) -L$(NCLIB) $(FFLAGS) $(NCFLAGS) -c $< 
-test__netcdf_write.x: test__netcdf_write.F90 m_netcdf.o
+test__netcdf_write.x: test__netcdf_write.F90 m_ncwrap.o
 	$(FC) -I$(NCINC) -L$(NCLIB) $(FFLAGS) $(NCFLAGS) $^ -o $@
-test__netcdf_read.x: test__netcdf_read.F90 m_netcdf.o
+test__netcdf_read.x: test__netcdf_read.F90 m_ncwrap.o
 	$(FC) -I$(NCINC) -L$(NCLIB) $(FFLAGS) $(NCFLAGS) $^ -o $@
 
 clean:
