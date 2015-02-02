@@ -495,6 +495,7 @@ contains
     !! --
     integer :: ncid
     integer :: i
+    integer :: ierr
     !! ----
 
 #ifdef _NETCDF
@@ -509,13 +510,14 @@ contains
     call nc_chk   (  nf90_inquire_dimension( ncid, 1, xname, nx )     )
     call nc_chk   (  nf90_inquire_dimension( ncid, 2, yname, ny )     )
 
-    call nc_chk   (  nf90_get_att( ncid, NF90_GLOBAL, 'title', title ))
-    call nc_chk   (  nf90_get_att( ncid, 1, 'units', xunit )          )
-    call nc_chk   (  nf90_get_att( ncid, 2, 'units', yunit )          )
+    !! non-esential attributes: do not issue warning messages
+    ierr = nf90_get_att( ncid, NF90_GLOBAL, 'title', title ); if( ierr /= NF90_NOERR ) title=''
+    ierr = nf90_get_att( ncid, 1, 'units', xunit ); if( ierr /= NF90_NOERR ) xunit=''
+    ierr = nf90_get_att( ncid, 2, 'units', yunit ); if( ierr /= NF90_NOERR ) yunit=''
     
     if( ndim == 3 ) then                                              
        call nc_chk(  nf90_inquire_dimension( ncid, 3, tname, nt )     )
-       call nc_chk(  nf90_get_att( ncid, 3, 'units', tunit ) )
+       ierr = nf90_get_att( ncid, 3, 'units', tunit ); if ( ierr /= NF90_NOERR ) tunit=''
     else
        nt = 0
        tname = ''
@@ -524,7 +526,7 @@ contains
     !! unit
     do i=1, nvar
        call nc_chk( nf90_inquire_variable ( ncid, ndim+i, zname(i) ) )
-       call nc_chk( nf90_get_att          ( ncid, ndim+i, 'units', zunit(i) ) )
+       ierr = nf90_get_att( ncid, ndim+i, 'units', zunit(i) ); if( ierr /= NF90_NOERR ) zunit(i) = ''
     end do
     call nc_chk   (  nf90_close            ( ncid )                   )
     
