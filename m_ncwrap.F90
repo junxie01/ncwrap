@@ -1301,7 +1301,7 @@ contains
     allocate( x(nx), y(ny), z(nx,ny) )
 
     call ncwrap__open( fname, nx, ny, x, y, ncid )
-    call ncwrap__read_data( ncid, zname, z )
+    call ncwrap__read_data( ncid, zname2(1), z )
     call ncwrap__close( ncid )
 #endif
 
@@ -1338,7 +1338,7 @@ contains
     allocate( x(nx), y(ny), z(nx,ny) )
 
     call ncwrap__open( fname, nx, ny, x, y, ncid )
-    call ncwrap__read_data( ncid, zname, z )
+    call ncwrap__read_data( ncid, zname2(1), z )
     call ncwrap__close( ncid )
 #endif
 
