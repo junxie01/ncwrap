@@ -92,7 +92,7 @@ program test__netcdf_read
   call ncwrap__open('test_3.nc', nlon, nlat, nt, lon, lat, tim, ncid )
   do k=1, nt
      call ncwrap__read_data( ncid, zname2(1), k, dat1 )
-     call ncwrap__read_data( ncid, zname2(1), k, dat2 )
+     call ncwrap__read_data( ncid, zname2(2), k, dat2 )
      do j=1, nlat
         do i=1, nlon
            write(200+k,'(4F15.5)') lon(i), lat(j), dat1(i,j), dat2(i,j)
